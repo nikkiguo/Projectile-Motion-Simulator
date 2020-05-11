@@ -1,11 +1,12 @@
-// The "NikkiGuo_Culminating" class.
+package culminating;
+
 import java.awt.*;
 
-public class NikkiGuo_Culminating extends Frame
+public class SimulatorMenu extends Frame
 {
-    public NikkiGuo_Culminating ()
+    public SimulatorMenu ()
     {
-	super ("NikkiGuo_Culminating"); // Set the frame's name
+	super ("SimulatorMenu");        // Set the frame's name
 	setSize (400, 400);     // Set the frame's size
 	show ();                // Show the frame
     } // Constructor
@@ -17,6 +18,6 @@ public class NikkiGuo_Culminating extends Frame
     
     public static void main (String[] args)
     {
-	new NikkiGuo_Culminating ();    // Create a NikkiGuo_Culminating frame
+	new SimulatorMenu ();   // Create a SimulatorMenu frame
     } // main method
-} // NikkiGuo_Culminating class
+} // SimulatorMenu class
