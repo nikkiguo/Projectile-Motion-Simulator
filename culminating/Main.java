@@ -4,6 +4,6 @@ public class Main
 {
     public static void main (String[] args)
     {
-	new Simulator ();
+	new SimulatorMenu ();
     } // main method
 } // Main class
