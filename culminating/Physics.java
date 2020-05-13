@@ -9,14 +9,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Simulator extends JFrame
+public class Physics extends JFrame
 {
-    static JFrame frame;
-    public Simulator ()
+    JFrame frame;
+    public Physics ()
     {
-	frame = new JFrame ("Simulator");
+	frame = new JFrame ("Physics");
 	frame.setSize (800, 700);
-	frame.setVisible (true);
+	frame.setVisible (true);      // Show the frame
     } // Constructor
 
 
@@ -24,4 +24,4 @@ public class Simulator extends JFrame
     {
 	// Place the drawing code here
     } // paint method
-} // NikkiGuo_Culminating class
+} // Physics class

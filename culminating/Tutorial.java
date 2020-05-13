@@ -9,14 +9,15 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Simulator extends JFrame
+public class Tutorial extends JFrame
 {
     static JFrame frame;
-    public Simulator ()
+    
+    public Tutorial ()
     {
-	frame = new JFrame ("Simulator");
+	frame = new JFrame ("Tutorial");
 	frame.setSize (800, 700);
-	frame.setVisible (true);
+	frame.setVisible (true);          // Show the frame
     } // Constructor
 
 
@@ -24,4 +25,4 @@ public class Simulator extends JFrame
     {
 	// Place the drawing code here
     } // paint method
-} // NikkiGuo_Culminating class
+} // Tutorial class
