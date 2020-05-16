@@ -19,7 +19,7 @@ public class SimulatorMenu extends JFrame
 
     // Create menu JButtons in array
     private JButton[] buttons = {
-	new JButton ("Start"),
+	new JButton ("Start!"),
 	new JButton ("Tutorial"),
 	new JButton ("Physics Lesson")
 	};
@@ -37,7 +37,7 @@ public class SimulatorMenu extends JFrame
 	// Create JPanel, set panel, and add graphical components
 	contentPanel = new JPanel ();
 	contentPanel.setBorder (new EmptyBorder (new Insets (50, 50, 50, 50)));
-	contentPanel.setLayout (new GridLayout (5, 0, 0, 10));
+	contentPanel.setLayout (new GridLayout (4, 0, 0, 20));
 	contentPanel.setBackground (bermuda);
 	contentPanel.add (title);
 
