@@ -10,12 +10,9 @@ import java.awt.event.ActionListener;
 
 public class SimulatorMenu extends JFrame
 {
-    final static Font TITLE_FONT = new Font ("Courier New", Font.PLAIN, 40);
-    final static Font BUTTON_FONT = new Font ("Courier New", Font.PLAIN, 25);
     private JLabel title;
     private JPanel contentPanel;
     static JFrame frame;
-    static Color bermuda = new Color (137, 171, 227);
 
     // Create menu JButtons in array
     private JButton[] buttons = {
@@ -31,21 +28,20 @@ public class SimulatorMenu extends JFrame
 
 	// Create JLabel title
 	title = new JLabel ("- Projectile Motion -", JLabel.CENTER);
-	title.setFont (TITLE_FONT);
-	//title.setForeground (Color.white);
+	title.setFont (Style.TITLE_FONT); 
 
 	// Create JPanel, set panel, and add graphical components
 	contentPanel = new JPanel ();
 	contentPanel.setBorder (new EmptyBorder (new Insets (50, 50, 50, 50)));
 	contentPanel.setLayout (new GridLayout (4, 0, 0, 20));
-	contentPanel.setBackground (bermuda);
+	contentPanel.setBackground (Style.BERMUDA);
 	contentPanel.add (title);
 
 	// Loops through button object array to set event handlers and stylize
 	for (int i = 0 ; i < 3 ; i++)
 	{
 	    contentPanel.add (buttons [i]);
-	    buttons [i].setFont (BUTTON_FONT);
+	    buttons [i].setFont (Style.BUTTON_FONT); 
 	    buttons [i].addActionListener (new ButtonListener ());
 	    buttons [i].setBackground (Color.ORANGE);
 	}
