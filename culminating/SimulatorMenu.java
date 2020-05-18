@@ -63,7 +63,7 @@ public class SimulatorMenu extends JFrame
 	    if (buttonClicked == buttons [0])
 	    {
 		frame.dispose ();
-		Simulator simulatorFrame = new Simulator ();
+		Test simulatorFrame = new Test ();
 	    }
 	    else if (buttonClicked == buttons [1])
 	    {

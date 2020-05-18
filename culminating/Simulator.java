@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class Simulator extends JFrame
 {
     private JPanel contentPanel, contentInputPanel, contentOutputPanel
-	, inputPanel, statsPanel, realTimePanel, graphicsPanel;
+	, inputPanel, statsPanel, sliderPanel, realTimePanel, graphicsPanel;
     static JFrame frame;
     static JSlider angleSlider, velocitySlider, massSlider, heightSlider;
     static JLabel angleLabel, velocityLabel, massLabel, heightLabel;
@@ -39,19 +39,18 @@ public class Simulator extends JFrame
 	// Initialize JPanel objects
 	contentPanel = new JPanel (new GridLayout (2, 1, 0, 100));
 	contentInputPanel = new JPanel ();
+	sliderPanel = new JPanel ();
+	
+	
 	angleSlider = new JSlider (0, 200, 120);
 	angleLabel = new JLabel ();
-
 	angleSlider.setPaintTrack (true);
 	angleSlider.setPaintTicks (true);
 	angleSlider.setPaintLabels (true);
-
 	angleSlider.setMajorTickSpacing (50);
 	angleSlider.setMinorTickSpacing (5);
-	
 	heightSlider = new JSlider (0, 140, 2);
 	heightLabel = new JLabel ();
-
 	heightSlider.setPaintTrack (true);
 	heightSlider.setPaintTicks (true);
 	heightSlider.setPaintLabels (true);
@@ -60,15 +59,14 @@ public class Simulator extends JFrame
 	angleSlider.setMinorTickSpacing (5);
 	// angleSlider.addChangeListener (s);
 
-	contentInputPanel.add (angleSlider);
-	contentInputPanel.add (angleLabel);
+	sliderPanel.add (angleSlider);
+	sliderPanel.add (angleLabel);
 
-	contentInputPanel.add (heightSlider);
-      
+	sliderPanel.add (heightSlider);
 
 	//angleLabel.setText ("Angle (°): " + angleSlider.getValue ());
 	//heightLabel.setText ("Height (px): " + heightSlider.getValue ());
-	
+
 	contentOutputPanel = new JPanel (new BorderLayout ());
 	graphicsPanel = new JPanel ();
 	realTimePanel = new JPanel ();
@@ -77,7 +75,8 @@ public class Simulator extends JFrame
 	contentInputPanel.setBackground (Color.WHITE);
 	contentOutputPanel.setBackground (Color.WHITE);
 	statsPanel.setBackground (Color.GREEN);
-
+	
+	// Loop through statsLabels array to display stats 
 	for (int i = 0 ; i < 6 ; i++)
 	{
 	    statsPanel.add (statsLabels [i]);
@@ -86,8 +85,10 @@ public class Simulator extends JFrame
 	graphButton = new JButton ("Graph!");
 	graphButton.setFont (Style.CONTROL_BUTTON_FONT);
 	statsPanel.add (graphButton);
-
+	
 	// Display customized control buttons in input JPanel
+
+	 
 	for (int i = 0 ; i < 3 ; i++)
 	{
 	    contentInputPanel.add (controlButtons [i]);
@@ -95,13 +96,14 @@ public class Simulator extends JFrame
 	    controlButtons [i].setBackground (Color.YELLOW);
 	    controlButtons [i].addActionListener (new ControlBttnListener ());
 	}
-
+	
 	// Add sub JPanels of simulation output JPanel
 	contentOutputPanel.add (graphicsPanel, BorderLayout.CENTER);
 	contentOutputPanel.add (realTimePanel, BorderLayout.SOUTH);
 	contentOutputPanel.add (statsPanel, BorderLayout.EAST);
 
 	contentPanel.add (contentOutputPanel);
+	contentPanel.add (sliderPanel);
 	contentPanel.add (contentInputPanel);
 
 	frame = new JFrame ("Projectile Motion Simulator");
