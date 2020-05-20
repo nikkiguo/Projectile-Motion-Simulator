@@ -17,10 +17,11 @@ public class ProjectilePanel extends JPanel
     static int startMass, startHeight, velocity;
     static double startAngle, velocityX, velocityY;
 
-    private int animationSpeed = 20;
+    private int animationSpeed = 1;
     private Timer timer;
-    public static double kineticEnergy, gravitationalEnergy;
+    public static double kE, gE, time, changeInTime = 0.01;
     private static final double GRAVITY = 9.81;
+    private double positionX, positionY, startX = 10, startY = 415;
 
     public ProjectilePanel ()
     {
@@ -35,14 +36,28 @@ public class ProjectilePanel extends JPanel
 
     public void startSimulation ()
     {
+	setUserInput ();
 	timer.start ();
     }
 
 
-    public static void updateStats ()
+    public static void setUserInput ()
     {
-	kineticEnergy = (0.5 * Simulator.mass *(Math.pow(Simulator.velocity,2)));
-    
+	kE = (0.5 * Simulator.mass * (Math.pow (Simulator.velocity, 2)));
+	gE = (Simulator.mass * GRAVITY * 30);
+	velocityX = Simulator.velocity * Math.cos (Simulator.angle * (Math.PI / 180));
+	velocityY = Simulator.velocity * Math.sin (Simulator.angle * (Math.PI / 180));
+	System.out.println(velocityX);
+	System.out.println(velocityY);
+	}
+
+
+    private void launchBall ()
+    {
+	positionX = startX + (velocityX * time);
+	positionY = Math.abs(startY + ((velocityY * time) - (0.5 * GRAVITY * Math.pow (time, 2))));
+	time += changeInTime;
+	// System.out.println(positionX  + " " + positionY);
     }
 
 
@@ -60,9 +75,11 @@ public class ProjectilePanel extends JPanel
 	    g.setColor (Color.green);
 	    g.drawRect (0, 390, 517, 53);
 	    g.fillRect (0, 390, 517, 53);
-	    g.setColor (Color.black);
-	    g.drawOval (10, 415, 15, 15);
-	    g.fillOval (10, 415, 15, 15);
+
+	    Graphics2D ball = (Graphics2D) g;
+	    ball.setColor (Color.red);
+	    ball.fillOval((int) positionX, (int) positionY, 15, 15);
+	    
 
 	    // Place the drawing code here
 	} // paint method
@@ -73,7 +90,8 @@ public class ProjectilePanel extends JPanel
     {
 	public void actionPerformed (ActionEvent e)
 	{
-
+	    launchBall ();
+	    repaint();
 
 	}
     }

@@ -78,13 +78,13 @@ public class Simulator extends JFrame
 	}
 	);
 
-	velocitySlider = new JSlider (0, 200, 50);
-	velocityLabel = new JLabel ("Velocity (px/s): 50");
+	velocitySlider = new JSlider (0, 5, 2);
+	velocityLabel = new JLabel ("Velocity (px/s): 2");
 	velocityLabel.setFont (Style.TEXT_FONT);
 	velocitySlider.setPaintTrack (true);
 	velocitySlider.setPaintTicks (true);
 	velocitySlider.setPaintLabels (true);
-	velocitySlider.setMajorTickSpacing (50);
+	velocitySlider.setMajorTickSpacing (1);
 	velocitySlider.addChangeListener (new ChangeListener ()
 	{
 	    public void stateChanged (ChangeEvent e)
