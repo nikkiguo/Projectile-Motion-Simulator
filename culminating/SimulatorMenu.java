@@ -28,7 +28,7 @@ public class SimulatorMenu extends JFrame
 
 	// Create JLabel title
 	title = new JLabel ("- Projectile Motion -", JLabel.CENTER);
-	title.setFont (Style.TITLE_FONT); 
+	title.setFont (Style.TITLE_FONT);
 
 	// Create JPanel, set panel, and add graphical components
 	contentPanel = new JPanel ();
@@ -41,7 +41,7 @@ public class SimulatorMenu extends JFrame
 	for (int i = 0 ; i < 3 ; i++)
 	{
 	    contentPanel.add (buttons [i]);
-	    buttons [i].setFont (Style.BUTTON_FONT); 
+	    buttons [i].setFont (Style.BUTTON_FONT);
 	    buttons [i].addActionListener (new ButtonListener ());
 	    buttons [i].setBackground (Color.ORANGE);
 	}
@@ -63,7 +63,7 @@ public class SimulatorMenu extends JFrame
 	    if (buttonClicked == buttons [0])
 	    {
 		frame.dispose ();
-		Test simulatorFrame = new Test ();
+		Simulator simulatorFrame = new Simulator (); 
 	    }
 	    else if (buttonClicked == buttons [1])
 	    {
