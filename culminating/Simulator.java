@@ -11,22 +11,24 @@ import java.awt.event.ActionListener;
 
 public class Simulator extends JFrame
 {
-    // private Projectile ball = new Projectile (0, 0, 2, 3);
     private JPanel contentPanel, contentInputPanel, contentOutputPanel, buttonInputPanel
-	, inputPanel, statsPanel, sliderPanel, realTimePanel, graphicsPanel;
+	, inputPanel, statsPanel, sliderPanel;
     static JFrame frame;
-    static JSlider angleSlider, velocitySlider, massSlider, heightSlider;
-    static JLabel angleLabel, velocityLabel, massLabel, heightLabel;
+    static JSlider angleSlider, velocitySlider, massSlider;
+    static JLabel angleLabel, velocityLabel, massLabel;
     private JButton graphButton;
-    //GraphicsCanvas graphics;
+    public static int angle, velocity, mass;
+    public static int time = 0, heightMax = 0, distanceMax = 0, kineticEnergy = 0
+	, gravitationalEnergy = 0;
+    ProjectilePanel graphics;
 
-    private JLabel[] statsLabels = {
+    public JLabel[] statsLabels = {
 	new JLabel ("- STATS -", JLabel.CENTER),
-	new JLabel (" Time (s): ", JLabel.LEFT),
-	new JLabel (" Height Max (m): ", JLabel.LEFT),
-	new JLabel (" Distance Max (m): ", JLabel.LEFT),
-	new JLabel (" Kinetic Energy (J): ", JLabel.LEFT),
-	new JLabel (" Gravitational Energy (J): ", JLabel.LEFT),
+	new JLabel ("Time (s): 0", JLabel.LEFT),
+	new JLabel ("Height Max (px): 0", JLabel.LEFT),
+	new JLabel ("Distance Max (px): 0", JLabel.LEFT),
+	new JLabel ("Kinetic Energy (J): 0", JLabel.LEFT),
+	new JLabel ("Gravitational Energy (J): 0", JLabel.LEFT),
 	new JLabel (" "),
 	new JLabel (" "),
 	new JLabel (" ")
@@ -55,59 +57,67 @@ public class Simulator extends JFrame
 	contentInputPanel.setBorder (new EmptyBorder (0, 10, 0, 10));
 	buttonInputPanel = new JPanel ();
 	sliderPanel = new JPanel (new GridLayout (2, 1));
+	graphics = new ProjectilePanel();
+	
+	//////////////////// SLIDERS ///////////////////////////////////////
 
-	/*
-	graphics = new GraphicsCanvas ();
-	graphicsPanel = new JPanel ();
-	graphicsPanel.setBackground (Color.WHITE);
-	graphicsPanel.add (graphics);
-	*/
-
-	angleSlider = new JSlider (0, 200, 120);
-	angleLabel = new JLabel ("Angle (°): ");
+	angleSlider = new JSlider (0, 60, 30);
+	angleLabel = new JLabel ("Angle (°): 30");
 	angleLabel.setFont (Style.TEXT_FONT);
 	angleSlider.setPaintTrack (true);
 	angleSlider.setPaintTicks (true);
 	angleSlider.setPaintLabels (true);
-	angleSlider.setMajorTickSpacing (50);
-	angleSlider.setMinorTickSpacing (5);
+	angleSlider.setMajorTickSpacing (15);
+	angleSlider.addChangeListener (new ChangeListener ()
+	{
+	    public void stateChanged (ChangeEvent e)
+	    {
+		angle = angleSlider.getValue ();
+		angleLabel.setText ("Angle (°): " + angle);
+	    }
+	}
+	);
 
-	velocitySlider = new JSlider (0, 200, 120);
-	velocityLabel = new JLabel ("Velocity (px/s): ");
+	velocitySlider = new JSlider (0, 200, 50);
+	velocityLabel = new JLabel ("Velocity (px/s): 50");
 	velocityLabel.setFont (Style.TEXT_FONT);
 	velocitySlider.setPaintTrack (true);
 	velocitySlider.setPaintTicks (true);
 	velocitySlider.setPaintLabels (true);
 	velocitySlider.setMajorTickSpacing (50);
-	velocitySlider.setMinorTickSpacing (5);
+	velocitySlider.addChangeListener (new ChangeListener ()
+	{
+	    public void stateChanged (ChangeEvent e)
+	    {
+		velocity = velocitySlider.getValue ();
+		velocityLabel.setText ("Velocity (px/s): " + velocity);
+	    }
+	}
 
-	heightSlider = new JSlider (0, 140, 2);
-	heightLabel = new JLabel ("Height (px): ");
-	heightLabel.setFont (Style.TEXT_FONT);
-	heightSlider.setPaintTrack (true);
-	heightSlider.setPaintTicks (true);
-	heightSlider.setPaintLabels (true);
-	heightSlider.setMajorTickSpacing (50);
-	heightSlider.setMinorTickSpacing (5);
+	);
 
-	// angleSlider.addChangeListener (s);
-	massSlider = new JSlider (0, 140, 2);
-	massLabel = new JLabel ("Mass (g): ");
+	massSlider = new JSlider (0, 10, 5);
+	massLabel = new JLabel ("Mass (g): 5");
 	massLabel.setFont (Style.TEXT_FONT);
 	massSlider.setPaintTrack (true);
 	massSlider.setPaintTicks (true);
 	massSlider.setPaintLabels (true);
-	massSlider.setMajorTickSpacing (50);
-	massSlider.setMinorTickSpacing (5);
+	massSlider.setMajorTickSpacing (2);
+	massSlider.addChangeListener (new ChangeListener ()
+	{
+	    public void stateChanged (ChangeEvent e)
+	    {
+		mass = massSlider.getValue ();
+		massLabel.setText ("Mass (g): " + mass);
+	    }
+	}
+	);
 
 	sliderPanel.add (angleLabel);
 	sliderPanel.add (velocityLabel);
-	sliderPanel.add (heightLabel);
 	sliderPanel.add (massLabel);
-
 	sliderPanel.add (angleSlider);
 	sliderPanel.add (velocitySlider);
-	sliderPanel.add (heightSlider);
 	sliderPanel.add (massSlider);
 
 
@@ -117,7 +127,7 @@ public class Simulator extends JFrame
 	    statsLabels [i].setFont (Style.TEXT_FONT);
 	}
 
-	graphButton = new JButton ("Graph!");
+	graphButton = new JButton ("Graph");
 	graphButton.setFont (Style.CONTROL_BUTTON_FONT);
 
 	statsPanel.add (graphButton);
@@ -133,7 +143,8 @@ public class Simulator extends JFrame
 	    controlButtons [i].addActionListener (new ControlBttnListener ());
 	}
 
-	contentPanel.add (new ProjectilePanel(), BorderLayout.CENTER); 
+
+	contentPanel.add (graphics, BorderLayout.CENTER);
 	contentPanel.add (contentInputPanel, BorderLayout.SOUTH);
 	contentPanel.add (statsPanel, BorderLayout.EAST);
 
@@ -146,48 +157,50 @@ public class Simulator extends JFrame
     } // Constructor
 
 
+    // Handles button click events
     private class ControlBttnListener implements ActionListener
     {
 	public void actionPerformed (ActionEvent event)
 	{
 	    Object buttonClicked = event.getSource ();
-	    if (buttonClicked == controlButtons [0])
+	    if (buttonClicked == controlButtons [0]) // Navigates back to home
 	    {
 		frame.dispose ();
 		SimulatorMenu simulatorFrame = new SimulatorMenu ();
 	    }
-	    else if (buttonClicked == controlButtons [1])
+	    else if (buttonClicked == controlButtons [1]) // Runs simulate class
 	    {
-		controlButtons [1].setText ("...");
+		angle = angleSlider.getValue();
+		velocity = velocitySlider.getValue();
+		mass = massSlider.getValue();
+		graphics.startSimulation();
+		
 	    }
-	    else if (buttonClicked == controlButtons [2])
+	    else if (buttonClicked == controlButtons [2]) // Resets slider values
 	    {
-		controlButtons [2].setText (".");
+		angleSlider.setValue (30);
+		velocitySlider.setValue (50);
+		massSlider.setValue (5);
+
+		time = 0;
+		heightMax = 0;
+		distanceMax = 0;
+		kineticEnergy = 0;
+		gravitationalEnergy = 0;
+
+		statsLabels [1].setText ("Time (s): 0");
+		statsLabels [2].setText ("Height Max (px): 0");
+		statsLabels [3].setText ("Distance Max (px): 0");
+		statsLabels [4].setText ("Kinetic Energy (J): 0");
+		statsLabels [5].setText ("Gravitational Energy (J): 0");
+
+	    }
+	    else if (buttonClicked == graphButton)
+	    {
+	    // Graph the stats
 	    }
 	}
     }
-
-    /*
-    class GraphicsCanvas extends JPanel
-    {
-	public GraphicsCanvas ()
-	{
-	    this.setPreferredSize (new Dimension (518, 444));
-	    this.setBackground (Color.orange);
-	}
-
-
-	public void paint (Graphics g)
-	{
-	    super.paint (g);
-	    g.setColor (Color.green);
-	    g.drawRect (0, 390, 517, 53);
-	    g.fillRect (0, 390, 517, 53);
-	    
-	    // Place the drawing code here
-	} // paint method
-    }
-    */
 } // NikkiGuo_Culminating class
 
 
