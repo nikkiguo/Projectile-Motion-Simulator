@@ -24,8 +24,8 @@ public class Simulator extends JFrame
     private int animationSpeed = 1;
     private Timer timer;
     private static final double GRAVITY = -9.81;
-    private static double velocityX, velocityY, positionX, positionY, startX = 10, startY = 415;
-    public static double angle, velocity, mass
+    private static double velocityX, positionX, positionY, startX = 10, startY = 415;
+    public static double angle, velocity, mass, velocityY
 	, heightMax = 0, distanceMax = 0, kineticEnergy = 0, gravitationalEnergy = 0
 	, time, changeInTime = 0.02;
     GraphicsCanvas graphics;
@@ -76,8 +76,8 @@ public class Simulator extends JFrame
 
 	//////////////////// SLIDERS ///////////////////////////////////////
 
-	angleSlider = new JSlider (1, 92, 45);
-	angleLabel = new JLabel ("Angle (°): 30");
+	angleSlider = new JSlider (1, 90, 45);
+	angleLabel = new JLabel ("Angle (°): 45");
 	angleLabel.setFont (Style.TEXT_FONT);
 	angleSlider.setPaintTrack (true);
 	angleSlider.setPaintTicks (true);
@@ -93,7 +93,7 @@ public class Simulator extends JFrame
 	}
 	);
 
-	velocitySlider = new JSlider (1, 101, 101);
+	velocitySlider = new JSlider (1, 100, 100);
 	velocityLabel = new JLabel ("Velocity (px/s): 100");
 	velocityLabel.setFont (Style.TEXT_FONT);
 	velocitySlider.setPaintTrack (true);
@@ -197,7 +197,7 @@ public class Simulator extends JFrame
 	    }
 	    else if (buttonClicked == graphButton)
 	    {
-		// Graph the stats
+		Table tableFrame = new Table ();
 	    }
 	}
     }
@@ -212,18 +212,23 @@ public class Simulator extends JFrame
 
     public static void setUserInput ()
     {
+	double maxHeight, maxDistance, timeElapsed;
 	DecimalFormat df = new DecimalFormat ("#######.0");
-	kineticEnergy = (0.5 * mass * (Math.pow (velocity, 2)));
-	gravitationalEnergy = (mass * GRAVITY * 30);
 
-	statsLabels [1].setText ("Time (s): 0");
-	statsLabels [2].setText ("Height Max (px): 0");
-	statsLabels [3].setText ("Distance Max (px): 0");
-	statsLabels [4].setText ("Kinetic Energy (J): " + df.format (kineticEnergy));
-	statsLabels [5].setText ("Gravitational Energy (J): " + df.format (gravitationalEnergy));
+	maxHeight = (Math.pow (velocity, 2)) * (Math.pow ((Math.sin (angle * (Math.PI / 180))), 2)) / (-2 * GRAVITY);
+	maxDistance = (Math.pow (velocity, 2) * Math.sin (2 * (angle * (Math.PI / 180))) / ( -1 * GRAVITY));
+	kineticEnergy = (0.5 * mass * (Math.pow (velocity, 2)));
+	gravitationalEnergy = (mass * GRAVITY * maxHeight);
 
 	velocityX = velocity * Math.cos (angle * (Math.PI / 180));
 	velocityY = velocity * Math.sin (angle * (Math.PI / 180));
+	
+	timeElapsed = 2 * velocityY / (GRAVITY * -1);
+	statsLabels [1].setText ("Time (s): " + df.format(timeElapsed));
+	statsLabels [2].setText ("Height Max (px): " + df.format (maxHeight));
+	statsLabels [3].setText ("Distance Max (px): " + df.format (maxDistance));
+	statsLabels [4].setText ("Kinetic Energy (J): " + df.format (kineticEnergy));
+	statsLabels [5].setText ("Gravitational Energy (J): " + df.format (gravitationalEnergy));
     }
 
 
@@ -232,7 +237,6 @@ public class Simulator extends JFrame
 	positionX = startX + (velocityX * time);
 	positionY = Math.abs (startY - ((velocityY * time) - (0.5 * GRAVITY * Math.pow (time, 2))));
 	time += changeInTime;
-	//System.out.println ("X: " + positionX + " Y: " + positionY);
     }
 
 
@@ -241,15 +245,6 @@ public class Simulator extends JFrame
 	angleSlider.setValue (30);
 	velocitySlider.setValue (50);
 	massSlider.setValue (5);
-	
-	positionX = 10;
-	positionY = 415;
-
-	time = 0;
-	heightMax = 0;
-	distanceMax = 0;
-	kineticEnergy = 0;
-	gravitationalEnergy = 0;
 
 	statsLabels [1].setText ("Time (s): 0");
 	statsLabels [2].setText ("Height Max (px): 0");
@@ -257,10 +252,21 @@ public class Simulator extends JFrame
 	statsLabels [4].setText ("Kinetic Energy (J): 0");
 	statsLabels [5].setText ("Gravitational Energy (J): 0      ");
 
+	positionX = 10;
+	positionY = 415;
+	frame.repaint ();
+
 	if (time > 0)
 	{
-	    timer.stop (); 
+	    timer.stop ();
+
 	}
+
+	time = 0;
+	heightMax = 0;
+	distanceMax = 0;
+	kineticEnergy = 0;
+	gravitationalEnergy = 0;
 
     }
 
@@ -271,7 +277,6 @@ public class Simulator extends JFrame
 	{
 	    return false;
 	}
-	// System.out.println ("X: " + positionX + " Y: " + positionY);
 	return true;
     }
 
@@ -294,7 +299,6 @@ public class Simulator extends JFrame
 	    Graphics2D ball = (Graphics2D) g;
 	    ball.setColor (Color.red);
 	    ball.fillOval ((int) positionX, (int) positionY, 15, 15);
-	    repaint ();
 
 	    // Place the drawing code here
 	} // paint method
@@ -306,12 +310,14 @@ public class Simulator extends JFrame
 	public void actionPerformed (ActionEvent e)
 	{
 	    launchBall ();
+	    frame.repaint ();
 
 	    if (!isInScreen ())
 	    {
 		timer.stop ();
+		Table tableFrame = new Table ();
+		resetValues ();
 	    }
-
 	}
     }
 } // NikkiGuo_Culminating class
