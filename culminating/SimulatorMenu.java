@@ -18,7 +18,7 @@ public class SimulatorMenu extends JFrame
     private JButton[] buttons = {
 	new JButton ("Start!"),
 	new JButton ("Tutorial"),
-	new JButton ("Physics Lesson")
+	new JButton ("Exit")
 	};
 
     public SimulatorMenu ()
@@ -73,7 +73,6 @@ public class SimulatorMenu extends JFrame
 	    else if (buttonClicked == buttons [2])
 	    {
 		frame.dispose ();
-		Physics physicsFrame = new Physics ();
 	    }
 	}
 
