@@ -1,5 +1,12 @@
+/*
+ * Nikki Guo - Projectile Motion Simulator - SIMULATORMENU.JAVA
+ * This class contains customized style features in the program that
+ * repeat, and these objects are called in the other classes
+*/
+
 package culminating;
 
+// Import select Java libraries
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
@@ -10,17 +17,19 @@ import java.awt.event.ActionListener;
 
 public class SimulatorMenu extends JFrame
 {
+    // Intialize variables and objects in the JFrame
     private JLabel title;
     private JPanel contentPanel;
     static JFrame frame;
 
-    // Create menu JButtons in array
+    // Declare JButton array
     private JButton[] buttons = {
 	new JButton ("Start!"),
 	new JButton ("Tutorial"),
 	new JButton ("Exit")
 	};
 
+    // SimulatorMenu constructor
     public SimulatorMenu ()
     {
 	// Create JFrame Object
@@ -30,14 +39,14 @@ public class SimulatorMenu extends JFrame
 	title = new JLabel ("- Projectile Motion -", JLabel.CENTER);
 	title.setFont (Style.TITLE_FONT);
 
-	// Create JPanel, set panel, and add graphical components
+	// Create JPanel, set panel, and add border/layout
 	contentPanel = new JPanel ();
 	contentPanel.setBorder (new EmptyBorder (new Insets (50, 50, 50, 50)));
 	contentPanel.setLayout (new GridLayout (4, 0, 0, 20));
 	contentPanel.setBackground (Style.BERMUDA);
 	contentPanel.add (title);
 
-	// Loops through button object array to set event handlers and stylize
+	// Loop through button object array to set event handlers and stylize
 	for (int i = 0 ; i < 3 ; i++)
 	{
 	    contentPanel.add (buttons [i]);
@@ -60,26 +69,24 @@ public class SimulatorMenu extends JFrame
 	public void actionPerformed (ActionEvent event)
 	{
 	    Object buttonClicked = event.getSource ();
-	    if (buttonClicked == buttons [0])
+	    if (buttonClicked == buttons [0]) // Button to go to simulator
 	    {
+		// Close current frame and run new frame class
 		frame.dispose ();
-		Simulator simulatorFrame = new Simulator (); 
+		Simulator simulatorFrame = new Simulator ();
 	    }
-	    else if (buttonClicked == buttons [1])
+	    else if (buttonClicked == buttons [1]) // Button to go to tutorial
 	    {
+		// Close current frame and run new frame class
 		frame.dispose ();
 		Tutorial tutorialFrame = new Tutorial ();
 	    }
-	    else if (buttonClicked == buttons [2])
+	    else if (buttonClicked == buttons [2]) // Button to exit
 	    {
+		// Closes program
 		frame.dispose ();
 	    }
 	}
-
-	public void paint (Graphics g)
-	{
-
-	} // paint method
     } // SimulatorMenu class
 }
 

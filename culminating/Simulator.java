@@ -1,5 +1,12 @@
+/*
+ * Nikki Guo - Projectile Motion Simulator - SIMULATOR.JAVA
+ * This class contains customized style features in the program that
+ * repeat, and these objects are called in the other classes
+*/
+
 package culminating;
 
+// Import select Java libraries
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
@@ -14,13 +21,13 @@ import java.text.DecimalFormat;
 
 public class Simulator extends JFrame
 {
+    // Intialize variables and objects in the JFrame
     private JPanel contentPanel, contentInputPanel, contentOutputPanel, buttonInputPanel
 	, inputPanel, statsPanel, sliderPanel, graphicsPanel;
     static JFrame frame;
     static JSlider angleSlider, velocitySlider, massSlider;
     static JLabel angleLabel, velocityLabel, massLabel;
     private JButton graphButton;
-
     private int animationSpeed = 1;
     private Timer timer;
     private static final double GRAVITY = -9.81;
@@ -30,44 +37,50 @@ public class Simulator extends JFrame
 	, time, changeInTime = 0.02;
     GraphicsCanvas graphics;
 
+    // Declare JLabel stats array
     private static JLabel[] statsLabels = {
 	new JLabel ("- STATS -", JLabel.CENTER),
 	new JLabel ("Time (s): 0", JLabel.LEFT),
 	new JLabel ("Height Max (px): 0", JLabel.LEFT),
 	new JLabel ("Distance Max (px): 0", JLabel.LEFT),
 	new JLabel ("Kinetic Energy (J): 0", JLabel.LEFT),
-	new JLabel ("Gravitational Energy (J): 0     ", JLabel.LEFT),
+	new JLabel ("Gravitational Energy (J): 0       ", JLabel.LEFT),
 	new JLabel (" "),
 	new JLabel (" "),
 	new JLabel (" ")
 	};
 
+    // Declare JButton controls array
     private JButton[] controlButtons = {
 	new JButton ("Home"),
 	new JButton ("Simulate!"),
 	new JButton ("Reset"),
 	};
 
+    // Simulator constructor
     public Simulator ()
     {
-	// Initialize JPanel objects
+
 	contentPanel = new JPanel ();
-	contentPanel.setBackground (Style.BERMUDA);
+	contentPanel.setBackground (Style.CORAL_RED);
 	contentPanel.setLayout (new BorderLayout (10, 10));
 	contentPanel.setBorder (new EmptyBorder (10, 10, 10, 10));
 
 	statsPanel = new JPanel ();
 	statsPanel.setLayout (new GridLayout (10, 0, 0, 0));
 	statsPanel.setBorder (new EmptyBorder (10, 10, 10, 10));
-	statsPanel.setBackground (Color.GREEN);
+	statsPanel.setBackground (Style.SUN_YELLOW);
 
 	contentInputPanel = new JPanel (new GridLayout (2, 0, 0, 15));
 	contentInputPanel.setBorder (new EmptyBorder (0, 10, 0, 10));
+	contentInputPanel.setBackground (Style.AQUA);
 	buttonInputPanel = new JPanel ();
+	buttonInputPanel.setBackground (Style.AQUA);
 	sliderPanel = new JPanel (new GridLayout (2, 1));
+	sliderPanel.setBackground (Style.AQUA);
 
 	graphicsPanel = new JPanel ();
-	graphicsPanel.setBackground (Color.white);
+	graphicsPanel.setBackground (Style.LAVENDER);
 	GraphicsCanvas graphics = new GraphicsCanvas ();
 	graphicsPanel.add (graphics);
 	positionX = 10;
@@ -83,15 +96,8 @@ public class Simulator extends JFrame
 	angleSlider.setPaintTicks (true);
 	angleSlider.setPaintLabels (true);
 	angleSlider.setMajorTickSpacing (13);
-	angleSlider.addChangeListener (new ChangeListener ()
-	{
-	    public void stateChanged (ChangeEvent e)
-	    {
-		angle = angleSlider.getValue ();
-		angleLabel.setText ("Angle (°): " + angle);
-	    }
-	}
-	);
+	angleSlider.setBackground (Style.AQUA);
+	angleSlider.addChangeListener (new SlideChangeListener ());
 
 	velocitySlider = new JSlider (1, 100, 100);
 	velocityLabel = new JLabel ("Velocity (px/s): 100");
@@ -100,16 +106,8 @@ public class Simulator extends JFrame
 	velocitySlider.setPaintTicks (true);
 	velocitySlider.setPaintLabels (true);
 	velocitySlider.setMajorTickSpacing (25);
-	velocitySlider.addChangeListener (new ChangeListener ()
-	{
-	    public void stateChanged (ChangeEvent e)
-	    {
-		velocity = velocitySlider.getValue ();
-		velocityLabel.setText ("Velocity (px/s): " + velocity);
-	    }
-	}
-
-	);
+	velocitySlider.setBackground (Style.AQUA);
+	velocitySlider.addChangeListener (new SlideChangeListener ());
 
 	massSlider = new JSlider (0, 10, 5);
 	massLabel = new JLabel ("Mass (g): 5");
@@ -118,15 +116,8 @@ public class Simulator extends JFrame
 	massSlider.setPaintTicks (true);
 	massSlider.setPaintLabels (true);
 	massSlider.setMajorTickSpacing (2);
-	massSlider.addChangeListener (new ChangeListener ()
-	{
-	    public void stateChanged (ChangeEvent e)
-	    {
-		mass = massSlider.getValue ();
-		massLabel.setText ("Mass (g): " + mass);
-	    }
-	}
-	);
+	massSlider.setBackground (Style.AQUA);
+	massSlider.addChangeListener (new SlideChangeListener ());
 
 	sliderPanel.add (angleLabel);
 	sliderPanel.add (velocityLabel);
@@ -142,11 +133,6 @@ public class Simulator extends JFrame
 	    statsLabels [i].setFont (Style.TEXT_FONT);
 	}
 
-	graphButton = new JButton ("Show Table");
-	graphButton.setFont (Style.CONTROL_BUTTON_FONT);
-
-	statsPanel.add (graphButton);
-
 	contentInputPanel.add (sliderPanel);
 	contentInputPanel.add (buttonInputPanel);
 
@@ -154,7 +140,7 @@ public class Simulator extends JFrame
 	{
 	    buttonInputPanel.add (controlButtons [i]);
 	    controlButtons [i].setFont (Style.CONTROL_BUTTON_FONT);
-	    controlButtons [i].setBackground (Color.YELLOW);
+	    controlButtons [i].setBackground (Style.SUN_YELLOW);
 	    controlButtons [i].addActionListener (new ControlBttnListener ());
 	}
 
@@ -162,13 +148,40 @@ public class Simulator extends JFrame
 	contentPanel.add (contentInputPanel, BorderLayout.SOUTH);
 	contentPanel.add (statsPanel, BorderLayout.EAST);
 
-	frame = new JFrame ("Test");
+	frame = new JFrame ("Simulate!");
 	frame.getContentPane ().add (contentPanel);
 	frame.setSize (1250, 700);
 	frame.setResizable (false);
 	frame.setVisible (true);
 
     } // Constructor
+
+
+    private class SlideChangeListener implements ChangeListener
+    {
+	public void stateChanged (ChangeEvent e)
+	{
+	    Object sliderSelected = e.getSource ();
+
+	    if (sliderSelected == angleSlider)
+	    {
+		angle = angleSlider.getValue ();
+		angleLabel.setText ("Angle (°): " + angle);
+	    }
+	    else if (sliderSelected == velocitySlider)
+	    {
+		velocity = velocitySlider.getValue ();
+		velocityLabel.setText ("Velocity (px/s): " + velocity);
+	    }
+	    else if (sliderSelected == massSlider)
+	    {
+		mass = massSlider.getValue ();
+		massLabel.setText ("Mass (g): " + mass);
+	    }
+
+	}
+
+    }
 
 
     // Handles button click events
@@ -179,11 +192,15 @@ public class Simulator extends JFrame
 	    Object buttonClicked = event.getSource ();
 	    if (buttonClicked == controlButtons [0]) // Navigates back to home
 	    {
+		// Close current frame and run new frame class
+
 		frame.dispose ();
 		SimulatorMenu simulatorFrame = new SimulatorMenu ();
+		resetValues ();
 	    }
 	    else if (buttonClicked == controlButtons [1]) // Runs simulate class
 	    {
+		// Gets values inputted on slider and start simulation
 		angle = angleSlider.getValue ();
 		velocity = velocitySlider.getValue ();
 		mass = massSlider.getValue ();
@@ -193,38 +210,48 @@ public class Simulator extends JFrame
 	    }
 	    else if (buttonClicked == controlButtons [2]) // Resets slider values
 	    {
+		// Calls resetValues method
 		resetValues ();
-	    }
-	    else if (buttonClicked == graphButton)
-	    {
-		Table tableFrame = new Table ();
 	    }
 	}
     }
 
 
+    // Method to start simulation, set input and start timer
     public void startSimulation ()
     {
+	controlButtons [1].setVisible (false);
+	controlButtons [1].setEnabled (false);
 	setUserInput ();
 	timer.start ();
     }
 
 
+    // Method to calculate values based on user input of velocity, angle, mass
     public static void setUserInput ()
     {
+	// Declare variables and format object to round values
 	double maxHeight, maxDistance, timeElapsed;
 	DecimalFormat df = new DecimalFormat ("#######.0");
 
-	maxHeight = (Math.pow (velocity, 2)) * (Math.pow ((Math.sin (angle * (Math.PI / 180))), 2)) / (-2 * GRAVITY);
-	maxDistance = (Math.pow (velocity, 2) * Math.sin (2 * (angle * (Math.PI / 180))) / ( -1 * GRAVITY));
+	// Calculate height, distance, kinetic/gravitational energy
+	maxHeight = (Math.pow (velocity, 2))
+	    * (Math.pow ((Math.sin (angle * (Math.PI / 180))), 2))
+	    / (-2 * GRAVITY);
+	maxDistance = (Math.pow (velocity, 2)
+		* Math.sin (2 * (angle * (Math.PI / 180))) / (-1 * GRAVITY));
 	kineticEnergy = (0.5 * mass * (Math.pow (velocity, 2)));
 	gravitationalEnergy = (mass * GRAVITY * maxHeight);
 
+	// Calculate velocity in x and y direction, uses java math class
 	velocityX = velocity * Math.cos (angle * (Math.PI / 180));
 	velocityY = velocity * Math.sin (angle * (Math.PI / 180));
-	
+
+	// Calculate time it takes for ball to land in real life
 	timeElapsed = 2 * velocityY / (GRAVITY * -1);
-	statsLabels [1].setText ("Time (s): " + df.format(timeElapsed));
+
+	// Display stats in stats panel, round numbers to 1 decimal place
+	statsLabels [1].setText ("Time (s): " + df.format (timeElapsed));
 	statsLabels [2].setText ("Height Max (px): " + df.format (maxHeight));
 	statsLabels [3].setText ("Distance Max (px): " + df.format (maxDistance));
 	statsLabels [4].setText ("Kinetic Energy (J): " + df.format (kineticEnergy));
@@ -232,36 +259,47 @@ public class Simulator extends JFrame
     }
 
 
+    // Method to calculate horizontal and vertical position of ball
     private void launchBall ()
     {
+	// Calculates positions based on physics kinematic equations
 	positionX = startX + (velocityX * time);
 	positionY = Math.abs (startY - ((velocityY * time) - (0.5 * GRAVITY * Math.pow (time, 2))));
+	// Increments time value
 	time += changeInTime;
     }
 
 
+    // Method to reset values upon clicking reset JButton
     private void resetValues ()
     {
-	angleSlider.setValue (30);
-	velocitySlider.setValue (50);
+	// Reset sliders to default values
+	angleSlider.setValue (45);
+	velocitySlider.setValue (100);
 	massSlider.setValue (5);
 
+	// Resets stats JLabels
 	statsLabels [1].setText ("Time (s): 0");
 	statsLabels [2].setText ("Height Max (px): 0");
 	statsLabels [3].setText ("Distance Max (px): 0");
 	statsLabels [4].setText ("Kinetic Energy (J): 0");
-	statsLabels [5].setText ("Gravitational Energy (J): 0      ");
+	statsLabels [5].setText ("Gravitational Energy (J): 0       ");
 
+	// Reposition and repaint ball
 	positionX = 10;
 	positionY = 415;
 	frame.repaint ();
 
+	// Stops animation if in the middle of simulation
 	if (time > 0)
 	{
 	    timer.stop ();
-
+	    controlButtons [1].setVisible (true);
+	    controlButtons [1].setEnabled (true);
 	}
 
+
+	// Reset stats values for future calculations
 	time = 0;
 	heightMax = 0;
 	distanceMax = 0;
@@ -271,31 +309,40 @@ public class Simulator extends JFrame
     }
 
 
+    // Method to check if ball is in screen
     private boolean isInScreen ()
     {
 	if ((positionX < 0 || positionX > 906) || (positionY > 429))
 	{
 	    return false;
 	}
+
+
 	return true;
     }
 
 
+    // Displays custom graphics
     public class GraphicsCanvas extends JPanel
     {
+	// GraphicsCanvas constructor
 	public GraphicsCanvas ()
 	{
-	    this.setPreferredSize (new Dimension (906, 444));
-	    this.setBackground (Color.orange);
+	    this.setPreferredSize (new Dimension (916, 444));
+	    this.setBackground (Style.SKY_BLUE);
 	}
 
+
+	// Paint method for repainting the ball
 	public void paint (Graphics g)
 	{
+	    // Paints background
 	    super.paint (g);
-	    g.setColor (Color.green);
+	    g.setColor (Style.SEA_GREEN);
 	    g.drawRect (0, 390, 967, 53);
 	    g.fillRect (0, 390, 967, 53);
 
+	    // Paints the ball
 	    Graphics2D ball = (Graphics2D) g;
 	    ball.setColor (Color.red);
 	    ball.fillOval ((int) positionX, (int) positionY, 15, 15);
@@ -305,18 +352,21 @@ public class Simulator extends JFrame
     }
 
 
+    // Handles timing of projectile motion animation
     class TimerListener implements ActionListener
     {
 	public void actionPerformed (ActionEvent e)
 	{
+	    // Calculates ball position and repaints the ball
 	    launchBall ();
 	    frame.repaint ();
 
+	    // Stops timer if out of bounds, runs Table class
 	    if (!isInScreen ())
 	    {
 		timer.stop ();
 		Table tableFrame = new Table ();
-		resetValues ();
+
 	    }
 	}
     }
