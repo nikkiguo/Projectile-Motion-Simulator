@@ -29,7 +29,7 @@ public class Tutorial extends JFrame
     {
 	// Create JFrame object and set size of window
 	frame = new JFrame ("Tutorial");
-	frame.setSize (800, 700);
+	frame.setSize (700, 600);
 	
 	// Create JPanel object and JEditorPane object and set layout
 	contentPanel = new JPanel ();

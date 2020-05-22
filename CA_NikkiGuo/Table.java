@@ -37,10 +37,10 @@ public class Table extends JFrame
 	// Add data panel with borders and grid layout in table frame
 	dataPanel = new JPanel ();
 	dataPanel.setBorder (new EmptyBorder (10, 10, 10, 10));
-	dataPanel.setLayout (new GridLayout (3, 10, 0, 20));
+	dataPanel.setLayout (new GridLayout (3, 10, 0, 10));
 	
 	// Add textpanel with borders and grid layout in table frame
-	textPanel = new JPanel (new GridLayout (2, 10, 0, 10));
+	textPanel = new JPanel (new GridLayout (2, 10, 0, 0));
 	textPanel.setBorder (new EmptyBorder (10, 10, 10, 10));
 	textPanel.setBackground (Style.LIGHT_GREEN);
 	
@@ -57,7 +57,7 @@ public class Table extends JFrame
 		
 	// Format JTextArea(wrap, margins) and add to textPanel
 	textArea.setFont (Style.TEXT_FONT);
-	textArea.setMargin (new Insets (10, 10, 10, 0));
+	textArea.setMargin (new Insets (10, 10, 10, 10));
 	textArea.setWrapStyleWord (true);
 	textArea.setLineWrap (true);
 	textArea.setEditable (false);
@@ -103,7 +103,7 @@ public class Table extends JFrame
 	// Set frame title and size, add JPanel 
 	frame = new JFrame ("Table of Values");
 	frame.getContentPane ().add (dataPanel);
-	frame.setSize (800, 700);
+	frame.setSize (700, 600);
 	frame.setVisible (true);
 	frame.show ();
     } // Constructor

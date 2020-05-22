@@ -57,7 +57,7 @@ public class SimulatorMenu extends JFrame
 
 	// Customize frame and show it
 	frame.getContentPane ().add (contentPanel);
-	frame.setSize (800, 700);
+	frame.setSize (700, 600);
 	frame.setVisible (true);
 
     } // Constructor

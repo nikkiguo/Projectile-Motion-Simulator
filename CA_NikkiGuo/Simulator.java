@@ -212,16 +212,13 @@ public class Simulator extends JFrame
 	    if (buttonClicked == controlButtons [0])
 	    {
 		// Close current frame and run new frame class
-		// Navigates back to home
 		frame.dispose ();
 		SimulatorMenu simulatorFrame = new SimulatorMenu ();
 		resetValues ();
 	    }
 	    else if (buttonClicked == controlButtons [1])
 	    {
-		// Gets values inputted on slider and start simulation
-		// Set timer for animation
-		// Runs simulate method
+		// Gets values inputted on slider,start simulation,timer
 		angle = angleSlider.getValue ();
 		velocity = velocitySlider.getValue ();
 		mass = massSlider.getValue ();
@@ -232,7 +229,6 @@ public class Simulator extends JFrame
 	    else if (buttonClicked == controlButtons [2])
 	    {
 		// Calls resetValues method
-		// Resets slider values
 		resetValues ();
 	    }
 	}
@@ -245,9 +241,7 @@ public class Simulator extends JFrame
 	// Set Simulate! button to invisible
 	controlButtons [1].setVisible (false);
 	controlButtons [1].setEnabled (false);
-	// calculates stats on statsPanel JPanel
 	setUserInput ();
-	// Start timer
 	timer.start ();
     }
 
