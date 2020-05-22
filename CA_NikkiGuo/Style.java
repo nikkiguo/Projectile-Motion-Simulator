@@ -4,9 +4,9 @@
  * repeat, and these objects are called in the other classes
 */
 
-package culminating;
+package CA_NikkiGuo;
 
-// Import select Java libraries
+// Import select Java package
 import java.awt.*;
 import javax.swing.*;
 

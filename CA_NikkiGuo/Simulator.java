@@ -4,9 +4,9 @@
  * repeat, and these objects are called in the other classes
 */
 
-package culminating;
+package CA_NikkiGuo;
 
-// Import select Java libraries
+// Import select Java packages
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
@@ -22,19 +22,20 @@ import java.text.DecimalFormat;
 public class Simulator extends JFrame
 {
     // Intialize variables and objects in the JFrame
-    private JPanel contentPanel, contentInputPanel, contentOutputPanel, buttonInputPanel
-	, inputPanel, statsPanel, sliderPanel, graphicsPanel;
-    static JFrame frame;
-    static JSlider angleSlider, velocitySlider, massSlider;
-    static JLabel angleLabel, velocityLabel, massLabel;
+    private JPanel contentPanel, contentInputPanel, buttonInputPanel
+	, statsPanel, sliderPanel, graphicsPanel;
     private JButton graphButton;
     private int animationSpeed = 1;
     private Timer timer;
     private static final double GRAVITY = -9.81;
     private static double velocityX, positionX, positionY, startX = 10, startY = 415;
-    public static double angle, velocity, mass, velocityY
+    private static double angle, velocity, mass
 	, heightMax = 0, distanceMax = 0, kineticEnergy = 0, gravitationalEnergy = 0
 	, time, changeInTime = 0.02;
+    public static double velocityY;
+    static JFrame frame;
+    static JSlider angleSlider, velocitySlider, massSlider;
+    static JLabel angleLabel, velocityLabel, massLabel;
     GraphicsCanvas graphics;
 
     // Declare JLabel stats array
@@ -60,35 +61,40 @@ public class Simulator extends JFrame
     // Simulator constructor
     public Simulator ()
     {
-
+	// Create JPanel object as parent JPanel and customize colour/layout
 	contentPanel = new JPanel ();
 	contentPanel.setBackground (Style.CORAL_RED);
 	contentPanel.setLayout (new BorderLayout (10, 10));
 	contentPanel.setBorder (new EmptyBorder (10, 10, 10, 10));
 
+	// Create JPanel object with layout to store stats during simulation
 	statsPanel = new JPanel ();
 	statsPanel.setLayout (new GridLayout (10, 0, 0, 0));
 	statsPanel.setBorder (new EmptyBorder (10, 10, 10, 10));
 	statsPanel.setBackground (Style.SUN_YELLOW);
 
+	// Create JPanel object to oraganise input panels (buttons and sliders)
 	contentInputPanel = new JPanel (new GridLayout (2, 0, 0, 15));
 	contentInputPanel.setBorder (new EmptyBorder (0, 10, 0, 10));
 	contentInputPanel.setBackground (Style.AQUA);
+
+	// Create JPanel objects with layout manager for button and slider
 	buttonInputPanel = new JPanel ();
 	buttonInputPanel.setBackground (Style.AQUA);
 	sliderPanel = new JPanel (new GridLayout (2, 1));
 	sliderPanel.setBackground (Style.AQUA);
 
+	// Create JPanel object for graphics and add GraphicsCanvas class
 	graphicsPanel = new JPanel ();
 	graphicsPanel.setBackground (Style.LAVENDER);
 	GraphicsCanvas graphics = new GraphicsCanvas ();
 	graphicsPanel.add (graphics);
+
+	// Set initial position of ball
 	positionX = 10;
 	positionY = 415;
 
-
-	//////////////////// SLIDERS ///////////////////////////////////////
-
+	// Create JSlider object and add min, max, default values
 	angleSlider = new JSlider (1, 90, 45);
 	angleLabel = new JLabel ("Angle (°): 45");
 	angleLabel.setFont (Style.TEXT_FONT);
@@ -97,8 +103,10 @@ public class Simulator extends JFrame
 	angleSlider.setPaintLabels (true);
 	angleSlider.setMajorTickSpacing (13);
 	angleSlider.setBackground (Style.AQUA);
+	// Add change listener to slider to change JLabel number
 	angleSlider.addChangeListener (new SlideChangeListener ());
 
+	// Create JSlider object and add min, max, default values
 	velocitySlider = new JSlider (1, 100, 100);
 	velocityLabel = new JLabel ("Velocity (px/s): 100");
 	velocityLabel.setFont (Style.TEXT_FONT);
@@ -107,8 +115,10 @@ public class Simulator extends JFrame
 	velocitySlider.setPaintLabels (true);
 	velocitySlider.setMajorTickSpacing (25);
 	velocitySlider.setBackground (Style.AQUA);
+	// Add change listener to slider to change JLabel number
 	velocitySlider.addChangeListener (new SlideChangeListener ());
 
+	// Create JSlider object and add min, max, default values
 	massSlider = new JSlider (0, 10, 5);
 	massLabel = new JLabel ("Mass (g): 5");
 	massLabel.setFont (Style.TEXT_FONT);
@@ -117,8 +127,10 @@ public class Simulator extends JFrame
 	massSlider.setPaintLabels (true);
 	massSlider.setMajorTickSpacing (2);
 	massSlider.setBackground (Style.AQUA);
+	// Add change listener to slider to change JLabel number
 	massSlider.addChangeListener (new SlideChangeListener ());
 
+	// Add JSliders and JLabels in the JPanel
 	sliderPanel.add (angleLabel);
 	sliderPanel.add (velocityLabel);
 	sliderPanel.add (massLabel);
@@ -126,16 +138,18 @@ public class Simulator extends JFrame
 	sliderPanel.add (velocitySlider);
 	sliderPanel.add (massSlider);
 
-
+	// Loop through statsLabels array and add to statsPanel JPanel
 	for (int i = 0 ; i < 9 ; i++)
 	{
 	    statsPanel.add (statsLabels [i]);
 	    statsLabels [i].setFont (Style.TEXT_FONT);
 	}
 
+	// Add sliderPanel and buttonInputPanel to input JPanel
 	contentInputPanel.add (sliderPanel);
 	contentInputPanel.add (buttonInputPanel);
 
+	// Loop through controlButtons array, customize button, add listener
 	for (int i = 0 ; i < 3 ; i++)
 	{
 	    buttonInputPanel.add (controlButtons [i]);
@@ -144,10 +158,12 @@ public class Simulator extends JFrame
 	    controlButtons [i].addActionListener (new ControlBttnListener ());
 	}
 
+	// Add child JPanels to main parent JPanel and organise layout spacing
 	contentPanel.add (graphicsPanel, BorderLayout.CENTER);
 	contentPanel.add (contentInputPanel, BorderLayout.SOUTH);
 	contentPanel.add (statsPanel, BorderLayout.EAST);
 
+	// Create frame object and add parent JPanel, set size and visibility
 	frame = new JFrame ("Simulate!");
 	frame.getContentPane ().add (contentPanel);
 	frame.setSize (1250, 700);
@@ -157,12 +173,15 @@ public class Simulator extends JFrame
     } // Constructor
 
 
+    // Handles slider change events
     private class SlideChangeListener implements ChangeListener
     {
 	public void stateChanged (ChangeEvent e)
 	{
+	    // Get slider object
 	    Object sliderSelected = e.getSource ();
 
+	    // Sets text based on slider chosen
 	    if (sliderSelected == angleSlider)
 	    {
 		angle = angleSlider.getValue ();
@@ -190,17 +209,19 @@ public class Simulator extends JFrame
 	public void actionPerformed (ActionEvent event)
 	{
 	    Object buttonClicked = event.getSource ();
-	    if (buttonClicked == controlButtons [0]) // Navigates back to home
+	    if (buttonClicked == controlButtons [0])
 	    {
 		// Close current frame and run new frame class
-
+		// Navigates back to home
 		frame.dispose ();
 		SimulatorMenu simulatorFrame = new SimulatorMenu ();
 		resetValues ();
 	    }
-	    else if (buttonClicked == controlButtons [1]) // Runs simulate class
+	    else if (buttonClicked == controlButtons [1])
 	    {
 		// Gets values inputted on slider and start simulation
+		// Set timer for animation
+		// Runs simulate method
 		angle = angleSlider.getValue ();
 		velocity = velocitySlider.getValue ();
 		mass = massSlider.getValue ();
@@ -208,9 +229,10 @@ public class Simulator extends JFrame
 		startSimulation ();
 
 	    }
-	    else if (buttonClicked == controlButtons [2]) // Resets slider values
+	    else if (buttonClicked == controlButtons [2])
 	    {
 		// Calls resetValues method
+		// Resets slider values
 		resetValues ();
 	    }
 	}
@@ -220,9 +242,12 @@ public class Simulator extends JFrame
     // Method to start simulation, set input and start timer
     public void startSimulation ()
     {
+	// Set Simulate! button to invisible
 	controlButtons [1].setVisible (false);
 	controlButtons [1].setEnabled (false);
+	// calculates stats on statsPanel JPanel
 	setUserInput ();
+	// Start timer
 	timer.start ();
     }
 
@@ -317,7 +342,6 @@ public class Simulator extends JFrame
 	    return false;
 	}
 
-
 	return true;
     }
 
@@ -366,6 +390,7 @@ public class Simulator extends JFrame
 	    {
 		timer.stop ();
 		Table tableFrame = new Table ();
+		// Displays position-time values and acceleration-time values
 
 	    }
 	}

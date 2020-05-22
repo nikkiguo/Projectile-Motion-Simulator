@@ -4,9 +4,9 @@
  * displays a table of values for position time and acceleration time.
 */ 
 
-package culminating;
+package CA_NikkiGuo;
 
-// Import select Java libraries 
+// Import select Java packages
 import java.awt.*;
 import javax.swing.*;
 import java.util.Arrays;
@@ -53,7 +53,7 @@ public class Table extends JFrame
 		+ "acceleration-time values. Negative position-time values "
 		+ "represent positions below the screen. Acceleration values remain "
 		+ "constant, as the only existing force is gravity when air resistance "
-		+ "is ignored. (1px = 1m)");
+		+ "is ignored.(1px = 1m)");
 		
 	// Format JTextArea(wrap, margins) and add to textPanel
 	textArea.setFont (Style.TEXT_FONT);
