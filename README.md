@@ -1,5 +1,5 @@
 # Projectile Motion Simulator 
-A Java program that simulates the physics concept, projectile motion with a GUI. 
+A program that simulates the physics concept with a Java Swing GUI. 
 
 Features:
 - Menu
