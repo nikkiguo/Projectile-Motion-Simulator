@@ -1,12 +1,5 @@
-/*
- * Nikki Guo - Projectile Motion Simulator - STYLE.JAVA
- * This class contains customized style features in the program that
- * repeat, and these objects are called in the other classes
-*/
-
 package CA_NikkiGuo;
 
-// Import select Java package
 import java.awt.*;
 import javax.swing.*;
 
