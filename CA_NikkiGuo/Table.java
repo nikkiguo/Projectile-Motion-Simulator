@@ -1,12 +1,5 @@
-/* 
- * Nikki Guo - Projectile Motion Simulator - TABLE.JAVA                                                                 
- * Based on the velocity value passed from the Simulator.java class, this page 
- * displays a table of values for position time and acceleration time.
-*/ 
-
 package CA_NikkiGuo;
 
-// Import select Java packages
 import java.awt.*;
 import javax.swing.*;
 import java.util.Arrays;
@@ -106,5 +99,5 @@ public class Table extends JFrame
 	frame.setSize (700, 600);
 	frame.setVisible (true);
 	frame.show ();
-    } // Constructor
-} // Table class
+    } 
+} 
