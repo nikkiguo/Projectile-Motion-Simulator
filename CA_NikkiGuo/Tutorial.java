@@ -1,11 +1,5 @@
-/*
- * Nikki Guo - Projectile Motion Simulator - TUTORIAL.JAVA
- * This class displays the tutorial for incoming users and explains the physics
-*/
-
 package CA_NikkiGuo;
 
-// Import select Java packages
 import java.awt.*;
 import java.awt.*;
 import javax.swing.*;
@@ -17,14 +11,12 @@ import java.awt.event.ActionListener;
 
 public class Tutorial extends JFrame
 {
-    // Intialize variables and objects in the JFrame
     static JFrame frame;
     JButton backToHome;
     JPanel contentPanel;
     JEditorPane textField;
     JScrollPane scroll;
     
-    // Tutorial constructor
     public Tutorial ()
     {
 	// Create JFrame object and set size of window
@@ -114,5 +106,5 @@ public class Tutorial extends JFrame
 	// Add contentPanel to frame and show it on window
 	frame.getContentPane ().add (contentPanel);
 	frame.setVisible (true);
-    } // Constructor
-} // Tutorial class
+    } 
+} 
