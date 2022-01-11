@@ -1,12 +1,5 @@
-/*
- * Nikki Guo - Projectile Motion Simulator - SIMULATORMENU.JAVA
- * This class contains customized style features in the program that
- * repeat, and these objects are called in the other classes
-*/
-
 package CA_NikkiGuo;
 
-// Import select Java packages
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
@@ -17,19 +10,16 @@ import java.awt.event.ActionListener;
 
 public class SimulatorMenu extends JFrame
 {
-    // Intialize variables and objects in the JFrame
     private JLabel title;
     private JPanel contentPanel;
     static JFrame frame;
 
-    // Declare JButton array
     private JButton[] buttons = {
 	new JButton ("Start!"),
 	new JButton ("Tutorial"),
 	new JButton ("Exit")
 	};
 
-    // SimulatorMenu constructor
     public SimulatorMenu ()
     {
 	// Create JFrame Object
@@ -60,7 +50,7 @@ public class SimulatorMenu extends JFrame
 	frame.setSize (700, 600);
 	frame.setVisible (true);
 
-    } // Constructor
+    } 
 
 
     // Handles actions for button clicked events
@@ -87,7 +77,7 @@ public class SimulatorMenu extends JFrame
 		frame.dispose ();
 	    }
 	}
-    } // SimulatorMenu class
+    } 
 }
 
 
