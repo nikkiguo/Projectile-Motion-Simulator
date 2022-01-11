@@ -6,7 +6,6 @@
 
 package CA_NikkiGuo;
 
-// Import select Java packages
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
@@ -58,7 +57,6 @@ public class Simulator extends JFrame
 	new JButton ("Reset"),
 	};
 
-    // Simulator constructor
     public Simulator ()
     {
 	// Create JPanel object as parent JPanel and customize colour/layout
@@ -96,7 +94,7 @@ public class Simulator extends JFrame
 
 	// Create JSlider object and add min, max, default values
 	angleSlider = new JSlider (1, 90, 45);
-	angleLabel = new JLabel ("Angle (°): 45");
+	angleLabel = new JLabel ("Angle (Â°): 45");
 	angleLabel.setFont (Style.TEXT_FONT);
 	angleSlider.setPaintTrack (true);
 	angleSlider.setPaintTicks (true);
@@ -170,7 +168,7 @@ public class Simulator extends JFrame
 	frame.setResizable (false);
 	frame.setVisible (true);
 
-    } // Constructor
+    } 
 
 
     // Handles slider change events
@@ -185,7 +183,7 @@ public class Simulator extends JFrame
 	    if (sliderSelected == angleSlider)
 	    {
 		angle = angleSlider.getValue ();
-		angleLabel.setText ("Angle (°): " + angle);
+		angleLabel.setText ("Angle (Â°): " + angle);
 	    }
 	    else if (sliderSelected == velocitySlider)
 	    {
@@ -389,6 +387,6 @@ public class Simulator extends JFrame
 	    }
 	}
     }
-} // NikkiGuo_Culminating class
+} 
 
 
